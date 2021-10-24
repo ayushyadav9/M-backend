@@ -23,7 +23,7 @@ module.exports.addProduct = async(req,res)=>{
     } catch (err) {
         res.status(500).json({
             error: err.message,
-            message: 'something went wrong',
+            message: 'Something went wrong',
             success: false,
         });
     }
@@ -54,7 +54,7 @@ module.exports.getProducts = async(req,res)=>{
     } catch (err) {
         res.status(500).json({
             error: err.message,
-            message: 'something went wrong',
+            message: 'Something went wrong',
             success: false,
         });
     }

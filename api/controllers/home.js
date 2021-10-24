@@ -1,5 +1,5 @@
 module.exports.home = (req,res)=>{
     res.json({
-        message: 'Success',
+        message: 'Ha shi chl rhi hai',
     });
 }
