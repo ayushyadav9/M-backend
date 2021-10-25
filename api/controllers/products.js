@@ -72,3 +72,21 @@ module.exports.getProduct = async(req,res)=>{
         });
     }
 }
+
+module.exports.getProductsByCategory = async (req,res)=>{
+    try {
+        let prods = await Products.find({category:req.params.category})
+        res.status(200).json({
+            message: 'Products found',
+            data: prods,
+            success: true
+        });
+        
+    } catch (err) {
+        res.status(500).json({
+            error: err.message,
+            message: 'Something went wrong',
+            success: false,
+        });
+    }
+}
