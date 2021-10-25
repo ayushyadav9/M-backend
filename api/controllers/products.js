@@ -32,22 +32,9 @@ module.exports.addProduct = async(req,res)=>{
 module.exports.getProducts = async(req,res)=>{
     try {
         let prod = await Products.find({});
-        let data = [];
-        prod.forEach(element => {
-            data.push({
-                id: element._id,
-                title: element.title,
-                price: element.price,
-                description: element.description,
-                category: element.category,
-                image: element.image,
-                rating: element.rating
-            });
-        });
-
         res.status(200).json({
             message: 'Products fetched',
-            data: data,
+            data: prod,
             success: true
         });
         
