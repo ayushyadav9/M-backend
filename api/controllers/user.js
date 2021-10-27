@@ -3,20 +3,21 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {OAuth2Client} = require("google-auth-library")
 
+
 module.exports.register = async (req,res)=>{
     try {
-        let user = await User.findOne({ email: req.body.email });
-        if (user) {
-            return res.status(400).json({
-                message: 'User already exists',
-                success: false,
-            });
-        }
-        let hash = await bcrypt.hash(req.body.password, 10);
+        // let user = await User.findOne({ email: req.body.email });
+        // if (user) {
+        //     return res.status(400).json({
+        //         message: 'User already exists',
+        //         success: false,
+        //     });
+        // }
+        // let hash = await bcrypt.hash(req.body.password, 10);
         user =  User({
-            name: req.body.name,
-            email: req.body.email,
-            password: hash,
+            name: "Ayush",
+            email: "aaaa@gmail.com",
+            password: "Dfdfdf",
             provider:"Local"
         });
         const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {expiresIn: '12h'});
