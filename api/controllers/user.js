@@ -13,10 +13,11 @@ module.exports.register = async (req,res)=>{
             });
         }
         let hash = await bcrypt.hash(req.body.password, 10);
-        user = new User({
+        user =  User({
             name: req.body.name,
             email: req.body.email,
-            password: hash
+            password: hash,
+            provider:"Local"
         });
         const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {expiresIn: '12h'});
         await user.save();
@@ -101,7 +102,8 @@ module.exports.googleSignup = async( req,res)=>{
                 user = new User({
                     name: name,
                     email: email,
-                    password: hash
+                    password: hash,
+                    provider: "Google"
                 });
                 await user.save();
                 res.status(200).json({

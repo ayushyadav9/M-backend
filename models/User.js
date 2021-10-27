@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
-  landingPageUrl: {
+  name:{
     type: String,
-    required: true,
+    required: true
   },
   email: {
     type: String,
@@ -15,6 +15,9 @@ const UserSchema = new Schema({
   password: {
     type: String,
     required: true,
+  },
+  provider: {
+    type: String
   },
   timestamp: {
     type: Date,
