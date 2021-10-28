@@ -6,18 +6,18 @@ const {OAuth2Client} = require("google-auth-library")
 
 module.exports.register = async (req,res)=>{
     try {
-        // let user = await User.findOne({ email: req.body.email });
-        // if (user) {
-        //     return res.status(400).json({
-        //         message: 'User already exists',
-        //         success: false,
-        //     });
-        // }
-        // let hash = await bcrypt.hash(req.body.password, 10);
+        let user = await User.findOne({ email: req.body.email });
+        if (user) {
+            return res.status(400).json({
+                message: 'User already exists',
+                success: false,
+            });
+        }
+        let hash = await bcrypt.hash(req.body.password, 10);
         user =  User({
-            name: "Ayush",
-            email: "aaaa@gmail.com",
-            password: "Dfdfdf",
+            name: req.body.name,
+            email: req.body.email,
+            password: hash,
             provider:"Local"
         });
         const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {expiresIn: '12h'});
@@ -77,23 +77,26 @@ module.exports.login = async(req,res)=>{
 
 module.exports.googleSignup = async( req,res)=>{
     try {
-        const client = new OAuth2Client("924996333248-b18i1m98ji19j0tfl0emmiv9el52eh2u.apps.googleusercontent.com")
+        const client = new OAuth2Client(process.env.OAUTH_CLIENT)
 
         const {tokenId}=req.body
-        client.verifyIdToken({idToken: tokenId, audience:"924996333248-b18i1m98ji19j0tfl0emmiv9el52eh2u.apps.googleusercontent.com"}).then(async (response)=>{
+        client.verifyIdToken({idToken: tokenId, audience:process.env.OAUTH_CLIENT}).then(async (response)=>{
           const {email_verified,name,email} = response.payload;
-          console.log(response.payload)
           let success = false;
           if(email_verified){
-            let user = await User.findOne({email:email})
+            let user = await User.findOne({email:email}).select(['-password','-provider'])
               if(user){
                 //login the user
-                const data = {
-                  user: {id: user.id,}
-                };
-                const authToken = jwt.sign(data, JWT_SECRET);
+                const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {expiresIn: '12h'});
                 success=true;
-                return res.json({success,authToken})
+                res.status(200).json({
+                    message: 'LogIn Successfully',
+                    data: {
+                        user: user,
+                        token: token,
+                    },
+                    success: true,
+                });
               }
               else{
                 //Sign up the user
