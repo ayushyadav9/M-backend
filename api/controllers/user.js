@@ -82,7 +82,6 @@ module.exports.googleSignup = async( req,res)=>{
         const {tokenId}=req.body
         client.verifyIdToken({idToken: tokenId, audience:process.env.OAUTH_CLIENT}).then(async (response)=>{
           const {email_verified,name,email} = response.payload;
-          let success = false;
           if(email_verified){
             let user = await User.findOne({email:email}).select(['-password','-provider'])
               if(user){
@@ -123,7 +122,10 @@ module.exports.googleSignup = async( req,res)=>{
         })
         
       } catch (error) {
-        console.log(error.message);
-        res.status(500).send("Internal error occured");
+        res.status(500).json({
+            error: error.message,
+            message: 'Something went wrong',
+            success: false,
+        });
       }
 }
