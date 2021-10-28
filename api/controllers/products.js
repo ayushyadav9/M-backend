@@ -31,12 +31,33 @@ module.exports.addProduct = async(req,res)=>{
 
 module.exports.getProducts = async(req,res)=>{
     try {
-        let prod = await Products.find({});
-        res.status(200).json({
-            message: 'Products fetched',
-            data: prod,
-            success: true
-        });
+        let gender = req.query.gender
+        let categ = req.query.category
+        if(categ){
+            let prods = await Products.find({category:categ})
+            res.status(200).json({
+                message: 'Category Products found',
+                data: prods,
+                success: true
+            });
+        }
+        else if(gender){
+            let prods = await Products.find({gender:gender})
+            res.status(200).json({
+                message: 'Gender Products found',
+                data: prods,
+                success: true
+            });
+        }
+        else{
+            let prod = await Products.find({});
+            res.status(200).json({
+                message: 'Products fetched',
+                data: prod,
+                success: true
+            });
+        }
+        
         
     } catch (err) {
         res.status(500).json({
@@ -73,20 +94,3 @@ module.exports.getProduct = async(req,res)=>{
     }
 }
 
-module.exports.getProductsByCategory = async (req,res)=>{
-    try {
-        let prods = await Products.find({category:req.params.category})
-        res.status(200).json({
-            message: 'Products found',
-            data: prods,
-            success: true
-        });
-        
-    } catch (err) {
-        res.status(500).json({
-            error: err.message,
-            message: 'Something went wrong',
-            success: false,
-        });
-    }
-}

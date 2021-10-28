@@ -17,7 +17,6 @@ router.post('/googleSignup',googleSignup)
 router.post('/addProduct',addProduct)
 router.get('/getProducts',getProducts)
 router.get('/getProduct/:id',getProduct)
-router.get('/getProducts/:category',getProductsByCategory)
 // router.get('/getProducts/:category',passport.authenticate('jwt', { session:false }),getProductsByCategory)
 
 router.get('*', (req, res) => {
