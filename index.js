@@ -1,20 +1,17 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const logger = require('./logger');
+
 require('dotenv').config();
 require('./config/db');
 
 const port = process.env.PORT || 5000
 app.use(cors())
 app.use(express.json())
-
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*")
-  }) 
+app.use(express.urlencoded({ extended: true }));
 
 app.use('/', require('./api/routes'));
-
-
 
 
 
@@ -34,7 +31,10 @@ app.use((error, req, res) => {
     });
 });
 
-app.listen(port, () => {
-    console.log(`Listening at http://localhost:${port}`);
+app.listen(port, (err) => {
+    if (err) {
+        logger.error(err);
+    }
+    logger.info(`Server started at http://localhost:${port}`);
 });
 
