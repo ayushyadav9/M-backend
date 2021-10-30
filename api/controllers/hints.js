@@ -38,19 +38,22 @@ module.exports.getHint = async(req,res)=>{
                 message: 'Fetched Successfully',
                 data: {
                     hint: hint,
-                    product: product
+                    productId: product._id
                 },
                 success: true,
             });
         }
         let hints = await Hints.find({});
         const hint = hints[Math.floor(Math.random() * hints.length)];
+        let products = await Products.find({category:hint.category})
+        let product  = products[Math.floor(Math.random() * products.length)];
         user.currentHint = hint;
         await user.save();
         res.status(200).json({
             message: 'Added Successfully',
             data: {
-                hint: hint
+                hint: hint,
+                productId:product._id
             },
             success: true,
         });
