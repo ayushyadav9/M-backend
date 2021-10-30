@@ -4,6 +4,7 @@ const {home} = require("./controllers/home");
 const passport = require('passport');
 const { addProduct,getProducts,getProduct,getProductsByCategory } = require("./controllers/products");
 const {register,login, googleSignup} = require("./controllers/user")
+const { addHints,getHint } = require("./controllers/hints")
 
 
 router.get('/', home)
@@ -18,6 +19,8 @@ router.post('/addProduct',addProduct)
 router.get('/getProducts',getProducts)
 router.get('/getProduct/:id',getProduct)
 // router.get('/getProducts/:category',passport.authenticate('jwt', { session:false }),getProductsByCategory)
+router.post('/addHint',addHints)
+router.get('/getHint',passport.authenticate('jwt', { session:false }),getHint)
 
 router.get('*', (req, res) => {
     res.status(404).json({

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const Hints = require("./Hints");
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
@@ -18,6 +18,10 @@ const UserSchema = new Schema({
   },
   provider: {
     type: String
+  },
+  currentHint:{
+    type: Schema.Types.ObjectId,
+    ref: 'Hints'
   },
   timestamp: {
     type: Date,
