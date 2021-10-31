@@ -23,6 +23,10 @@ const UserSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Hints'
   },
+  score:{
+    type: Number,
+    default: 0
+  },
   timestamp: {
     type: Date,
     default: Date.now,
