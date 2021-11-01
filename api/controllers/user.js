@@ -20,7 +20,7 @@ module.exports.register = async (req,res)=>{
             password: hash,
             provider:"Local"
         });
-        const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {expiresIn: '12h'});
+        const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
         await user.save();
 
         res.status(200).json({
@@ -51,7 +51,7 @@ module.exports.login = async(req,res)=>{
                 success: false,
             });
         }
-        const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {expiresIn: '12h'});
+        const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
         
         res.status(200).json({
             message: 'User logged in successfully',
@@ -86,7 +86,7 @@ module.exports.googleSignup = async( req,res)=>{
             let user = await User.findOne({email:email}).select(['-password','-provider'])
               if(user){
                 //login the user
-                const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {expiresIn: '12h'});
+                const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
                 success=true;
                 res.status(200).json({
                     message: 'LogIn Successfully',
@@ -100,7 +100,7 @@ module.exports.googleSignup = async( req,res)=>{
               else{
                 //Sign up the user
                 const password = email+process.env.JWT_SECRET;
-                const token = jwt.sign({ email: email }, process.env.JWT_SECRET, {expiresIn: '12h'});
+                const token = jwt.sign({ email: email }, process.env.JWT_SECRET);
                 let hash = await bcrypt.hash(password, 10);
                 user = new User({
                     name: name,
