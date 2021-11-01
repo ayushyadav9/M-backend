@@ -15,7 +15,7 @@ module.exports.sendScore = async (req,res)=>{
             let score = 10000/(moves*time);
             let user = await User.findById(req.user._id);
             score = score + user.score
-    
+            await User.updateOne({ _id : req.user._id }, {'$unset': { currentHint: ""}});
             await User.updateOne({ _id: req.user._id }, { '$set': { 'score':  score }});
             return res.status(200).json({
                 message: 'Updated Successfully',
