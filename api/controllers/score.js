@@ -33,6 +33,31 @@ module.exports.sendScore = async (req, res) => {
         });
       }
     }
+    else if (req.body.gametype === "guess-price") {
+      const { data, correct } = req.body;
+      let user = await User.findById(req.user._id);
+        if (data[0] > correct || data[1]< correct) {
+          return res.status(400).json({
+            message: "Your guess was not correct",
+            data: {totalScore: user.score,currentScore: 0},
+            success: true,
+          });
+        }
+        else{
+          let median = (data[0]+data[1])/2;
+          let score = 1000/Math.abs(median-correct);
+          await User.updateOne({ _id: req.user._id },{ $unset: { currentHint: "" }});
+          await User.updateOne({ _id: req.user._id }, { $set: { score: score+user.score } });
+          return res.status(200).json({
+            message: "You guessed correctly",
+            data: {
+              totalScore: score + user.score,
+              currentScore: score
+            },
+            success: true
+          });
+        }
+    }
   } catch (err) {
     res.status(500).json({
       error: err.message,
