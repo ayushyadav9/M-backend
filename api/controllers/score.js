@@ -36,6 +36,7 @@ module.exports.sendScore = async (req, res) => {
     else if (req.body.gametype === "guess-price") {
       const { data, correct } = req.body;
       let user = await User.findById(req.user._id);
+      await User.updateOne({ _id: req.user._id },{ $unset: { currentHint: "" }});
         if (data[0] > correct || data[1]< correct) {
           return res.status(400).json({
             message: "Your guess was not correct",
@@ -46,7 +47,6 @@ module.exports.sendScore = async (req, res) => {
         else{
           let median = (data[0]+data[1])/2;
           let score = 1000/Math.abs(median-correct);
-          await User.updateOne({ _id: req.user._id },{ $unset: { currentHint: "" }});
           await User.updateOne({ _id: req.user._id }, { $set: { score: score+user.score } });
           return res.status(200).json({
             message: "You guessed correctly",
