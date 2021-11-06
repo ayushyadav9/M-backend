@@ -42,7 +42,7 @@ module.exports.getHint = async(req,res)=>{
                     user:user,
                     hint: hint,
                     productId: product._id,
-                    universaProduct: prod
+                    universalProduct: prod
                 },
                 success: true,
             });
@@ -63,7 +63,7 @@ module.exports.getHint = async(req,res)=>{
                 user: user,
                 hint: hint,
                 productId:product._id,
-                universaProduct: prod
+                universalProduct: prod
             },
             success: true,
         });
