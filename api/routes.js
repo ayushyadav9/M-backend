@@ -3,7 +3,7 @@ const router = express.Router();
 const {home} = require("./controllers/home");
 const passport = require('passport');
 const { addProduct,getProducts,getProduct,getProductsByCategory } = require("./controllers/products");
-const {register,login, googleSignup, getUser} = require("./controllers/user")
+const {register,login, googleSignup, getUsers} = require("./controllers/user")
 const { addHints,getHint } = require("./controllers/hints")
 const {sendScore} = require("./controllers/score")
 
@@ -14,7 +14,7 @@ router.get('/', home)
 router.post('/register',register)
 router.post('/login',login)
 router.post('/googleSignup',googleSignup)
-router.get('/getUser',passport.authenticate('jwt', { session:false }),getUser)
+router.get('/getUsers',passport.authenticate('jwt', { session:false }),getUsers)
 
 
 router.post('/addProduct',addProduct)
