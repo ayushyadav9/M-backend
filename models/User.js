@@ -23,7 +23,7 @@ const UserSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Hints'
   },
-  totalPuzzels:{
+  totalPuzzlesSolved:{
     type: Number,
     default:0
   },

@@ -29,7 +29,7 @@ module.exports.addHints = async (req,res)=>{
 
 module.exports.getHint = async(req,res)=>{
     try {
-        let user = await User.findById(req.user._id);
+        let user = await User.findById(req.user._id).select(['-password','-provider']);
         if(user.currentHint){
             let hint = await Hints.findById(user.currentHint)
             let products = await Products.find({category:hint.category})
@@ -37,6 +37,7 @@ module.exports.getHint = async(req,res)=>{
             return res.status(200).json({
                 message: 'Fetched Successfully',
                 data: {
+                    user:user,
                     hint: hint,
                     productId: product._id
                 },
@@ -49,9 +50,11 @@ module.exports.getHint = async(req,res)=>{
         let product  = products[Math.floor(Math.random() * products.length)];
         user.currentHint = hint;
         await user.save();
+        user = await User.findById(req.user._id).select(['-password','-provider']);
         res.status(200).json({
             message: 'Added Successfully',
             data: {
+                user: user,
                 hint: hint,
                 productId:product._id
             },
