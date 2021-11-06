@@ -129,3 +129,29 @@ module.exports.googleSignup = async( req,res)=>{
         });
       }
 }
+
+module.exports.getUser = async (req,res)=>{
+    try {
+        let user = await User.findById(req.user._id).select(['-password','-provider']);
+        if(user){
+            return res.status(200).json({
+                message: 'Fetched Successfully',
+                user: user,
+                success: true,
+            });
+        }
+        return res.status(400).json({
+            message: 'No user Found',
+            success: false,
+        });
+        
+        
+    } catch (error) {
+        res.status(500).json({
+            error: error.message,
+            message: 'Something went wrong',
+            success: false,
+        });
+    }
+    
+}

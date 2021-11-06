@@ -4,10 +4,12 @@ const Products = require("../../models/Product");
 
 module.exports.sendScore = async (req, res) => {
   try {
+    let user = await User.findById(req.user._id);
+    await User.updateOne({ _id: req.user._id }, { $set: { totalPuzzels: user.totalPuzzels+1 } });
     if (req.body.gametype === "sliding" || req.body.gametype === "memory-flip") {
       if (req.body.isSolused) {
         await User.updateOne({ _id: req.user._id },{ $unset: { currentHint: "" } });
-        let user = await User.findById(req.user._id);
+        
         return res.status(200).json({
           message: "Fetched Successfully",
           data: {score: user.score,},
@@ -22,7 +24,6 @@ module.exports.sendScore = async (req, res) => {
           });
         }
         let score = 10000 / (moves * time);
-        let user = await User.findById(req.user._id);
         score = score + user.score;
         await User.updateOne({ _id: req.user._id },{ $unset: { currentHint: "" }});
         await User.updateOne({ _id: req.user._id }, { $set: { score: score } });

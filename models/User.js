@@ -23,6 +23,10 @@ const UserSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Hints'
   },
+  totalPuzzels:{
+    type: Number,
+    default:0
+  },
   score:{
     type: Number,
     default: 0
